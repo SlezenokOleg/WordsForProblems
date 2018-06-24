@@ -10,8 +10,6 @@ I implemented a remove() and undoRemove() method to mark one word off and on ins
 
 of a HashSet to check every word.
 
-In class TrieNode i realize 26 children, which corresponds to each letter of the English alphabet, which will be prefixes.
-
 
                                               Result:
                                               
