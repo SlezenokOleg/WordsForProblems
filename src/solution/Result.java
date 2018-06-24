@@ -3,11 +3,11 @@ package solution;
 import java.util.Set;
 
 class Result {
-    Set<String> wordDict;
+    Set<String> wordD;
     Integer maxLength;
 
-    Result(Set<String> wordDict, Integer maxLength) {
-        this.wordDict = wordDict;
+    Result(Set<String> wordD, Integer maxLength) {
+        this.wordD = wordD;
         this.maxLength = maxLength;
     }
 
