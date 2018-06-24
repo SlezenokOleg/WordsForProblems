@@ -17,21 +17,21 @@ public class ConcatenatedWords {
                 if (word == null || word.length() == 0) continue;
                 test.remove(word, root);
                 int n = word.length();
-                boolean[] dp = new boolean[n + 1];
-                dp[0] = true;
+                boolean[] bool = new boolean[n + 1];
+                bool[0] = true;
 
                 for (int i = 1; i <= n; i++) {
                     for (int j = 1; j <= i && j <= maxLength; j++) {
-                        if (!dp[i - j]) continue;
+                        if (!bool[i - j]) continue;
 
                         String subWord = word.substring(i - j, i);
                         if (test.contains(subWord, root)) {
-                            dp[i] = true;
+                            bool[i] = true;
                             break;
                         }
                     }
                 }
-                if (dp[n]) concatenatedWords.add(word);
+                if (bool[n]) concatenatedWords.add(word);
                 test.undoRemove(word, root);
             }
 
@@ -59,25 +59,19 @@ public class ConcatenatedWords {
             e.printStackTrace();
         }
     }
-
-    private static Result readFromFile() throws Exception {
-        Set<String> wordDict = new HashSet<>();
-        int maxLength = Integer.MIN_VALUE;
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader
-                ("C:\\Users\\Olejkoo\\Desktop\\wordsforproblem\\src\\solution\\words.txt"))) {
-            String line = bufferedReader.readLine();
-
-            while (line != null) {
-                String word = line;
-                maxLength = (maxLength > word.length()) ? maxLength : word.length();
-                if (word.length() != 0)
-                    wordDict.add(word.trim());
-                line = bufferedReader.readLine();
-            }
+    
+    
+    // Returns true if the word is in the trie.
+    public boolean contains(String word, TreeNode root) {
+        TreeNode node = root;
+        for (int i = 0; i < word.length(); i++) {
+            if (node.child[word.charAt(i) - 'a'] == null) return false;
+            node = node.child[word.charAt(i) - 'a'];
         }
-        return new Result(wordDict, maxLength);
+        return node.isWord;
     }
 
+    
     private TreeNode buildTree(Set<String> words) {
         TreeNode root = new TreeNode();
         for (String word : words) {
@@ -93,15 +87,15 @@ public class ConcatenatedWords {
         }
         return root;
     }
-
-    // Returns true if the word is in the trie.
-    public boolean contains(String word, TreeNode root) {
+    
+    
+     // mark that word off, we are not really deleting that word
+    private void remove(String word, TreeNode root) {
         TreeNode node = root;
         for (int i = 0; i < word.length(); i++) {
-            if (node.child[word.charAt(i) - 'a'] == null) return false;
             node = node.child[word.charAt(i) - 'a'];
         }
-        return node.isWord;
+        node.isWord = false;
     }
 
     // mark that word on
@@ -113,12 +107,22 @@ public class ConcatenatedWords {
         node.isWord = true;
     }
 
-    // mark that word off, we are not really deleting that word
-    private void remove(String word, TreeNode root) {
-        TreeNode node = root;
-        for (int i = 0; i < word.length(); i++) {
-            node = node.child[word.charAt(i) - 'a'];
+    
+     private static Result readFromFile() throws Exception {
+        Set<String> wordD = new HashSet<>();
+        int maxLength = Integer.MIN_VALUE;
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader
+                ("C:\\Users\\Olejkoo\\Desktop\\wordsforproblem\\src\\solution\\words.txt"))) {
+            String line = bufferedReader.readLine();
+
+            while (line != null) {
+                String word = line;
+                maxLength = (maxLength > word.length()) ? maxLength : word.length();
+                if (word.length() != 0)
+                    wordD.add(word.trim());
+                line = bufferedReader.readLine();
+            }
         }
-        node.isWord = false;
+        return new Result(wordD, maxLength);
     }
 }
