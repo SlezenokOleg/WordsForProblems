@@ -11,7 +11,7 @@ public class ConcatenatedWords {
             Result result = readFromFile();
             Set<String> words = result.wordDict;
             Integer maxLength = result.maxLength;
-            TreeNode root = test.buildTree(words);
+            TrieNode root = test.buildTrie(words);
             List<String> concatenatedWords = new ArrayList<>();
             for (String word : words) {
                 if (word == null || word.length() == 0) continue;
@@ -62,8 +62,8 @@ public class ConcatenatedWords {
     
     
     // Returns true if the word is in the trie.
-    public boolean contains(String word, TreeNode root) {
-        TreeNode node = root;
+    public boolean contains(String word, TrieNode root) {
+        TrieNode node = root;
         for (int i = 0; i < word.length(); i++) {
             if (node.child[word.charAt(i) - 'a'] == null) return false;
             node = node.child[word.charAt(i) - 'a'];
@@ -72,14 +72,14 @@ public class ConcatenatedWords {
     }
 
     
-    private TreeNode buildTree(Set<String> words) {
-        TreeNode root = new TreeNode();
+    private TrieNode buildTree(Set<String> words) {
+        TrieNode root = new TrieNode();
         for (String word : words) {
             char[] chars = word.toCharArray();
-            TreeNode node = root;
+            TrieNode node = root;
             for (char c : chars) {
                 if (node.child[c - 'a'] == null) {
-                    node.child[c - 'a'] = new TreeNode();
+                    node.child[c - 'a'] = new TrieNode();
                 }
                 node = node.child[c - 'a'];
             }
@@ -90,8 +90,8 @@ public class ConcatenatedWords {
     
     
      // mark that word off, we are not really deleting that word
-    private void remove(String word, TreeNode root) {
-        TreeNode node = root;
+    private void remove(String word, TrieNode root) {
+        TrieNode node = root;
         for (int i = 0; i < word.length(); i++) {
             node = node.child[word.charAt(i) - 'a'];
         }
@@ -99,8 +99,8 @@ public class ConcatenatedWords {
     }
 
     // mark that word on
-    private void undoRemove(String word, TreeNode root) {
-        TreeNode node = root;
+    private void undoRemove(String word, TrieNode root) {
+        TrieNode node = root;
         for (int i = 0; i < word.length(); i++) {
             node = node.child[word.charAt(i) - 'a'];
         }
